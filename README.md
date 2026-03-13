@@ -12,6 +12,11 @@ short_description: SmolLM2-360M OpenAI-compatible API with ADI routing
 # SmolLM2 Service
 ##### only a stupid LLM assi for the hub runs on 2 CPUs for free :D
 
+
+> [!IMPORTANT]
+> This project is under active development — always use the latest release from [Codey Lab Version ](https://github.com/Codey-LAB/SmolLM2-customs) *( i mean; more stable builds land here first)*.
+> This repo ([DEV-STATUS](https://github.com/VolkanSah/SmolLM2-custom)) is where the chaos happens. 🔬 a ⭐ on the repos will be cool 😙
+
 OpenAI-compatible LLM API powered by `SmolLM2-360M-Instruct` with integrated ADI (Anti-Dump Index) routing.
 
 ## Endpoints
