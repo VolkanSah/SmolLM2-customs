@@ -137,6 +137,9 @@ Once you have enough data → finetune → push to your private model repo → S
 - [Multi-LLM-API-Gateway](https://github.com/VolkanSah/Multi-LLM-API-Gateway) — the hub this was built for
 - [Anti-Dump-Index](https://github.com/VolkanSah/Anti-Dump-Index) — the ADI algorithm idea
 
+### Related Projekt 
+[Parquet-Sync](https://github.com/VolkanSah/Parquet-Sync) - dedicated interface between machine-efficient binary data (.parquet) and the necessity of manual human intervention. 
+
 
 ## License
 
