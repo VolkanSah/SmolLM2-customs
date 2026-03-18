@@ -1,0 +1,227 @@
+===== Application Startup at 2026-03-18 10:32:14 =====
+
+2026-03-18 10:33:22,349 [INFO] main: API_KEY set — endpoint is protected
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+2026-03-18 10:33:22,360 [INFO] main: === SmolLM2 Service starting ===
+2026-03-18 10:33:22,393 [INFO] model: HF API authenticated
+2026-03-18 10:33:22,393 [INFO] main: Model config: {'token': 'set', 'model_repo': 'HuggingFaceTB/SmolLM2-360M-Instruct', 'private_model': 'codey-lab/model.universal-mcp-hub', 'dataset_repo': 'codey-lab/data.universal-mcp-hub', 'hf_api': 'authenticated'}
+2026-03-18 10:33:22,837 [INFO] model: Private repo exists but has no weights yet — using base: HuggingFaceTB/SmolLM2-360M-Instruct
+2026-03-18 10:33:22,837 [INFO] smollm: Loading HuggingFaceTB/SmolLM2-360M-Instruct on cpu...
+2026-03-18 10:33:34,578 [INFO] smollm: Model ready [cpu]
+2026-03-18 10:33:34,999 [INFO] model: Model card updated: codey-lab/model.universal-mcp-hub
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:7860 (Press CTRL+C to quit)
+The token has not been saved to the git credentials helper. Pass `add_to_git_credential=True` in this function directly or `--add-to-git-credential` if using via `huggingface-cli` if you want to set the git credential as well.
+Token is valid (permission: fineGrained).
+Your token has been saved to /root/.cache/huggingface/token
+Login successful
+INFO:     10.20.26.157:43841 - "GET /?__sign=eyJhbGciOiJFZERTQSJ9.eyJyZWFkIjp0cnVlLCJwZXJtaXNzaW9ucyI6eyJyZXBvLmNvbnRlbnQucmVhZCI6dHJ1ZX0sIm9uQmVoYWxmT2YiOnsia2luZCI6InVzZXIiLCJfaWQiOiI2NmVkYjFlNDZjNTMwYzFhZGJlNjc4NGUiLCJ1c2VyIjoiQWxpYnJvd24iLCJzZXNzaW9uSWQiOiI2ODU4MzZhOWY5ZGM1OTkwNzYzYTdiODgifSwiaWF0IjoxNzczODMwMDI4LCJzdWIiOiIvc3BhY2VzL2NvZGV5LWxhYi9TbW9sTE0yLWN1c3RvbXMiLCJleHAiOjE3NzM5MTY0MjgsImlzcyI6Imh0dHBzOi8vaHVnZ2luZ2ZhY2UuY28ifQ.saq-KQt97QMUu1In2UeUbvapEjJTiqUPVO4rOIrV51oJuJ2heLi2HXYFykTrcYsj-CCtQpMTQA-DTF6muGgQAg HTTP/1.1" 200 OK
+INFO:     10.20.26.157:43841 - "GET /?__sign=eyJhbGciOiJFZERTQSJ9.eyJyZWFkIjp0cnVlLCJwZXJtaXNzaW9ucyI6eyJyZXBvLmNvbnRlbnQucmVhZCI6dHJ1ZX0sIm9uQmVoYWxmT2YiOnsia2luZCI6InVzZXIiLCJfaWQiOiI2NmVkYjFlNDZjNTMwYzFhZGJlNjc4NGUiLCJ1c2VyIjoiQWxpYnJvd24iLCJzZXNzaW9uSWQiOiI2ODU4MzZhOWY5ZGM1OTkwNzYzYTdiODgifSwiaWF0IjoxNzczODMwMDI4LCJzdWIiOiIvc3BhY2VzL2NvZGV5LWxhYi9TbW9sTE0yLWN1c3RvbXMiLCJleHAiOjE3NzM5MTY0MjgsImlzcyI6Imh0dHBzOi8vaHVnZ2luZ2ZhY2UuY28ifQ.saq-KQt97QMUu1In2UeUbvapEjJTiqUPVO4rOIrV51oJuJ2heLi2HXYFykTrcYsj-CCtQpMTQA-DTF6muGgQAg HTTP/1.1" 200 OK
+2026-03-18 10:34:27,203 [INFO] main: TRAIN-OPS | Background task started: train.py --mode export
+INFO:     10.16.43.195:38465 - "POST /v1/train/execute?mode=export HTTP/1.1" 200 OK
+2026-03-18 10:34:28,476 [INFO] train: Loading dataset from HF...
+Generating train split: 0 examples [00:00, ? examples/s]
+Generating train split: 76 examples [00:00, 9157.08 examples/s]
+2026-03-18 10:34:29,184 [INFO] train: Exported 72/76 entries → /tmp/train_data.jsonl (skipped: 4)
+2026-03-18 10:35:07,094 [INFO] main: TRAIN-OPS | Background task started: train.py --mode finetune
+INFO:     10.16.31.44:63105 - "POST /v1/train/execute?mode=finetune HTTP/1.1" 200 OK
+2026-03-18 10:35:08,001 [INFO] train: Training samples available: 72
+2026-03-18 10:35:08,001 [WARNING] train: Only 72 samples — recommend 500+ for meaningful finetuning
+2026-03-18 10:35:10,589 [INFO] train: Loading training data...
+2026-03-18 10:35:10,597 [INFO] train: Dataset ready: 72 samples
+2026-03-18 10:35:10,625 [INFO] model: HF API authenticated
+2026-03-18 10:35:10,737 [INFO] model: Private repo exists but has no weights yet — using base: HuggingFaceTB/SmolLM2-360M-Instruct
+2026-03-18 10:35:10,737 [INFO] train: Loading base model: HuggingFaceTB/SmolLM2-360M-Instruct on cpu...
+2026-03-18 10:35:11,733 [INFO] train: Initializing SFTTrainer...
+The token has not been saved to the git credentials helper. Pass `add_to_git_credential=True` in this function directly or `--add-to-git-credential` if using via `huggingface-cli` if you want to set the git credential as well.
+Token is valid (permission: fineGrained).
+Your token has been saved to /root/.cache/huggingface/token
+Login successful
+Converting train dataset to ChatML:   0%|          | 0/72 [00:00<?, ? examples/s]
+Converting train dataset to ChatML: 100%|██████████| 72/72 [00:00<00:00, 19074.65 examples/s]
+Adding EOS to train dataset:   0%|          | 0/72 [00:00<?, ? examples/s]
+Adding EOS to train dataset: 100%|██████████| 72/72 [00:00<00:00, 19131.45 examples/s]
+Tokenizing train dataset:   0%|          | 0/72 [00:00<?, ? examples/s]
+Tokenizing train dataset: 100%|██████████| 72/72 [00:00<00:00, 1934.47 examples/s]
+Truncating train dataset:   0%|          | 0/72 [00:00<?, ? examples/s]
+Truncating train dataset: 100%|██████████| 72/72 [00:00<00:00, 17973.45 examples/s]
+2026-03-18 10:35:12,937 [INFO] train: Starting finetuning...
+  0%|          | 0/54 [00:00<?, ?it/s]
+  2%|▏         | 1/54 [00:12<10:58, 12.43s/it]
+  4%|▎         | 2/54 [00:20<08:41, 10.03s/it]
+  6%|▌         | 3/54 [00:30<08:13,  9.67s/it]
+  7%|▋         | 4/54 [00:40<08:13,  9.87s/it]
+  9%|▉         | 5/54 [00:51<08:36, 10.54s/it]
+ 11%|█         | 6/54 [01:03<08:36, 10.77s/it]
+ 13%|█▎        | 7/54 [01:13<08:18, 10.60s/it]
+ 15%|█▍        | 8/54 [01:23<08:01, 10.46s/it]
+ 17%|█▋        | 9/54 [01:35<08:09, 10.88s/it]
+ 19%|█▊        | 10/54 [01:48<08:25, 11.49s/it]
+                                               
+
+ 19%|█▊        | 10/54 [01:48<08:25, 11.49s/it]
+ 20%|██        | 11/54 [01:59<08:13, 11.47s/it]
+ 22%|██▏       | 12/54 [02:09<07:47, 11.13s/it]
+ 24%|██▍       | 13/54 [02:20<07:29, 10.96s/it]
+ 26%|██▌       | 14/54 [02:32<07:32, 11.32s/it]
+ 28%|██▊       | 15/54 [02:43<07:11, 11.07s/it]
+ 30%|██▉       | 16/54 [02:54<07:06, 11.23s/it]
+ 31%|███▏      | 17/54 [03:03<06:32, 10.61s/it]
+ 33%|███▎      | 18/54 [03:12<06:00, 10.01s/it]
+ 35%|███▌      | 19/54 [03:20<05:32,  9.51s/it]
+ 37%|███▋      | 20/54 [03:29<05:11,  9.17s/it]
+                                               
+
+ 37%|███▋      | 20/54 [03:29<05:11,  9.17s/it]
+ 39%|███▉      | 21/54 [03:37<04:49,  8.77s/it]
+ 41%|████      | 22/54 [03:45<04:32,  8.51s/it]
+ 43%|████▎     | 23/54 [03:53<04:23,  8.51s/it]
+ 44%|████▍     | 24/54 [04:01<04:08,  8.27s/it]
+ 46%|████▋     | 25/54 [04:09<03:56,  8.16s/it]
+ 48%|████▊     | 26/54 [04:16<03:44,  8.01s/it]
+ 50%|█████     | 27/54 [04:24<03:35,  7.97s/it]
+ 52%|█████▏    | 28/54 [04:32<03:24,  7.88s/it]
+ 54%|█████▎    | 29/54 [04:40<03:21,  8.05s/it]
+ 56%|█████▌    | 30/54 [04:48<03:08,  7.85s/it]
+                                               
+
+ 56%|█████▌    | 30/54 [04:48<03:08,  7.85s/it]
+ 57%|█████▋    | 31/54 [04:56<03:04,  8.03s/it]
+ 59%|█████▉    | 32/54 [05:04<02:53,  7.91s/it]
+ 61%|██████    | 33/54 [05:12<02:46,  7.91s/it]
+ 63%|██████▎   | 34/54 [05:19<02:35,  7.79s/it]
+ 65%|██████▍   | 35/54 [05:28<02:33,  8.07s/it]
+ 67%|██████▋   | 36/54 [05:36<02:24,  8.04s/it]
+ 69%|██████▊   | 37/54 [05:43<02:13,  7.88s/it]
+ 70%|███████   | 38/54 [05:52<02:09,  8.08s/it]
+ 72%|███████▏  | 39/54 [06:00<02:00,  8.06s/it]
+ 74%|███████▍  | 40/54 [06:08<01:54,  8.19s/it]
+                                               
+
+ 74%|███████▍  | 40/54 [06:08<01:54,  8.19s/it]
+ 76%|███████▌  | 41/54 [06:19<01:55,  8.87s/it]
+ 78%|███████▊  | 42/54 [06:26<01:41,  8.46s/it]
+ 80%|███████▉  | 43/54 [06:34<01:29,  8.18s/it]
+ 81%|████████▏ | 44/54 [06:41<01:18,  7.89s/it]
+ 83%|████████▎ | 45/54 [06:49<01:11,  7.96s/it]
+ 85%|████████▌ | 46/54 [06:57<01:02,  7.87s/it]
+ 87%|████████▋ | 47/54 [07:05<00:55,  7.91s/it]
+ 89%|████████▉ | 48/54 [07:13<00:47,  7.98s/it]
+ 91%|█████████ | 49/54 [07:20<00:38,  7.64s/it]
+ 93%|█████████▎| 50/54 [07:27<00:30,  7.58s/it]
+                                               
+
+ 93%|█████████▎| 50/54 [07:27<00:30,  7.58s/it]
+ 94%|█████████▍| 51/54 [07:38<00:25,  8.63s/it]
+ 96%|█████████▋| 52/54 [07:48<00:18,  9.04s/it]
+ 98%|█████████▊| 53/54 [07:58<00:09,  9.07s/it]
+100%|██████████| 54/54 [08:07<00:00,  9.19s/it]
+                                               
+
+100%|██████████| 54/54 [08:10<00:00,  9.19s/it]
+100%|██████████| 54/54 [08:10<00:00,  9.07s/it]
+2026-03-18 10:43:23,153 [INFO] train: Training complete in 490s
+2026-03-18 10:43:25,404 [INFO] train: Model saved → /tmp/finetuned_model
+2026-03-18 10:43:25,404 [INFO] train: Pushing to HF: codey-lab/model.universal-mcp-hub...
+{'loss': 3.3387, 'grad_norm': 7.527754783630371, 'learning_rate': 2e-05, 'num_tokens': 2737.0, 'mean_token_accuracy': 0.4922782339155674, 'epoch': 0.56}
+{'loss': 1.7948, 'grad_norm': 6.425995349884033, 'learning_rate': 1.5454545454545454e-05, 'num_tokens': 5586.0, 'mean_token_accuracy': 0.6844361767172813, 'epoch': 1.11}
+{'loss': 0.992, 'grad_norm': 3.422382116317749, 'learning_rate': 1.0909090909090909e-05, 'num_tokens': 8319.0, 'mean_token_accuracy': 0.811980451643467, 'epoch': 1.67}
+{'loss': 0.7535, 'grad_norm': 3.497164726257324, 'learning_rate': 6.363636363636364e-06, 'num_tokens': 11063.0, 'mean_token_accuracy': 0.847795033454895, 'epoch': 2.22}
+{'loss': 0.6764, 'grad_norm': 2.628697395324707, 'learning_rate': 1.8181818181818183e-06, 'num_tokens': 13950.0, 'mean_token_accuracy': 0.8533542364835739, 'epoch': 2.78}
+{'train_runtime': 490.0267, 'train_samples_per_second': 0.441, 'train_steps_per_second': 0.11, 'train_loss': 1.4504717809182626, 'num_tokens': 14940.0, 'mean_token_accuracy': 0.8542515747249126, 'epoch': 3.0}
+model.safetensors:   0%|          | 0.00/1.45G [00:00<?, ?B/s]
+model.safetensors:   1%|          | 16.0M/1.45G [00:00<00:32, 44.3MB/s]
+model.safetensors:   2%|▏         | 32.0M/1.45G [00:00<00:23, 59.6MB/s]
+model.safetensors:   3%|▎         | 48.0M/1.45G [00:00<00:21, 66.5MB/s]
+model.safetensors:   4%|▍         | 64.0M/1.45G [00:01<00:35, 39.0MB/s]
+model.safetensors:   6%|▌         | 80.0M/1.45G [00:01<00:29, 46.8MB/s]
+model.safetensors:   6%|▋         | 93.5M/1.45G [00:01<00:23, 58.3MB/s]
+model.safetensors:   7%|▋         | 102M/1.45G [00:01<00:22, 59.6MB/s] 
+model.safetensors:   8%|▊         | 112M/1.45G [00:02<00:23, 56.5MB/s]
+model.safetensors:   9%|▉         | 128M/1.45G [00:02<00:24, 52.9MB/s]
+model.safetensors:  10%|▉         | 144M/1.45G [00:02<00:22, 58.1MB/s]
+model.safetensors:  11%|█         | 160M/1.45G [00:02<00:19, 65.7MB/s]
+model.safetensors:  12%|█▏        | 176M/1.45G [00:03<00:19, 66.3MB/s]
+model.safetensors:  13%|█▎        | 192M/1.45G [00:03<00:17, 70.2MB/s]
+model.safetensors:  14%|█▍        | 208M/1.45G [00:03<00:17, 72.8MB/s]
+model.safetensors:  15%|█▌        | 224M/1.45G [00:03<00:15, 76.8MB/s]
+model.safetensors:  17%|█▋        | 240M/1.45G [00:03<00:15, 75.9MB/s]
+model.safetensors:  18%|█▊        | 256M/1.45G [00:04<00:15, 77.4MB/s]
+model.safetensors:  19%|█▉        | 272M/1.45G [00:04<00:14, 80.2MB/s]
+model.safetensors:  20%|█▉        | 288M/1.45G [00:04<00:14, 78.5MB/s]
+model.safetensors:  21%|██        | 304M/1.45G [00:04<00:19, 59.5MB/s]
+model.safetensors:  22%|██▏       | 320M/1.45G [00:05<00:17, 63.4MB/s]
+model.safetensors:  23%|██▎       | 336M/1.45G [00:05<00:16, 66.7MB/s]
+model.safetensors:  24%|██▍       | 352M/1.45G [00:05<00:15, 71.3MB/s]
+model.safetensors:  25%|██▌       | 368M/1.45G [00:05<00:15, 71.5MB/s]
+model.safetensors:  27%|██▋       | 384M/1.45G [00:05<00:15, 70.1MB/s]
+model.safetensors:  28%|██▊       | 400M/1.45G [00:06<00:14, 69.9MB/s]
+model.safetensors:  29%|██▊       | 416M/1.45G [00:06<00:14, 72.1MB/s]
+model.safetensors:  30%|██▉       | 432M/1.45G [00:06<00:13, 75.3MB/s]
+model.safetensors:  31%|███       | 448M/1.45G [00:06<00:13, 72.6MB/s]
+model.safetensors:  32%|███▏      | 464M/1.45G [00:07<00:12, 76.4MB/s]
+model.safetensors:  33%|███▎      | 480M/1.45G [00:07<00:12, 78.5MB/s]
+model.safetensors:  34%|███▍      | 496M/1.45G [00:07<00:12, 78.4MB/s]
+model.safetensors:  35%|███▌      | 512M/1.45G [00:07<00:11, 79.4MB/s]
+model.safetensors:  36%|███▋      | 528M/1.45G [00:07<00:11, 79.1MB/s]
+model.safetensors:  38%|███▊      | 544M/1.45G [00:08<00:11, 77.4MB/s]
+model.safetensors:  39%|███▊      | 560M/1.45G [00:08<00:11, 79.9MB/s]
+model.safetensors:  40%|███▉      | 576M/1.45G [00:08<00:11, 77.5MB/s]
+model.safetensors:  41%|████      | 592M/1.45G [00:08<00:11, 76.1MB/s]
+model.safetensors:  42%|████▏     | 608M/1.45G [00:08<00:11, 76.2MB/s]
+model.safetensors:  43%|████▎     | 624M/1.45G [00:09<00:11, 69.4MB/s]
+model.safetensors:  44%|████▍     | 640M/1.45G [00:09<00:11, 68.5MB/s]
+model.safetensors:  45%|████▌     | 656M/1.45G [00:09<00:11, 69.8MB/s]
+model.safetensors:  46%|████▋     | 672M/1.45G [00:09<00:10, 72.7MB/s]
+model.safetensors:  48%|████▊     | 688M/1.45G [00:10<00:10, 71.7MB/s]
+model.safetensors:  49%|████▊     | 704M/1.45G [00:10<00:10, 70.0MB/s]
+model.safetensors:  50%|████▉     | 720M/1.45G [00:10<00:10, 72.3MB/s]
+model.safetensors:  51%|█████     | 736M/1.45G [00:10<00:09, 73.6MB/s]
+model.safetensors:  52%|█████▏    | 752M/1.45G [00:10<00:09, 71.4MB/s]
+model.safetensors:  53%|█████▎    | 768M/1.45G [00:11<00:09, 74.6MB/s]
+model.safetensors:  54%|█████▍    | 784M/1.45G [00:11<00:08, 78.1MB/s]
+model.safetensors:  55%|█████▌    | 800M/1.45G [00:11<00:07, 81.6MB/s]
+model.safetensors:  56%|█████▋    | 816M/1.45G [00:11<00:08, 78.0MB/s]
+model.safetensors:  57%|█████▋    | 832M/1.45G [00:11<00:08, 74.9MB/s]
+model.safetensors:  59%|█████▊    | 848M/1.45G [00:12<00:08, 69.5MB/s]
+model.safetensors:  60%|█████▉    | 864M/1.45G [00:12<00:08, 72.5MB/s]
+model.safetensors:  61%|██████    | 880M/1.45G [00:12<00:07, 71.2MB/s]
+model.safetensors:  62%|██████▏   | 896M/1.45G [00:12<00:08, 68.8MB/s]
+model.safetensors:  63%|██████▎   | 912M/1.45G [00:13<00:07, 72.7MB/s]
+model.safetensors:  64%|██████▍   | 928M/1.45G [00:13<00:07, 72.2MB/s]
+model.safetensors:  65%|██████▌   | 944M/1.45G [00:13<00:06, 72.8MB/s]
+model.safetensors:  66%|██████▋   | 960M/1.45G [00:13<00:06, 74.2MB/s]
+model.safetensors:  67%|██████▋   | 976M/1.45G [00:13<00:06, 73.8MB/s]
+model.safetensors:  69%|██████▊   | 992M/1.45G [00:14<00:05, 76.2MB/s]
+model.safetensors:  70%|██████▉   | 1.01G/1.45G [00:14<00:06, 66.9MB/s]
+model.safetensors:  71%|███████   | 1.02G/1.45G [00:14<00:06, 67.0MB/s]
+model.safetensors:  72%|███████▏  | 1.04G/1.45G [00:14<00:05, 70.6MB/s]
+model.safetensors:  73%|███████▎  | 1.06G/1.45G [00:15<00:05, 71.0MB/s]
+model.safetensors:  74%|███████▍  | 1.07G/1.45G [00:15<00:09, 40.5MB/s]
+model.safetensors:  75%|███████▌  | 1.09G/1.45G [00:16<00:08, 40.6MB/s]
+model.safetensors:  76%|███████▋  | 1.10G/1.45G [00:16<00:07, 45.6MB/s]
+model.safetensors:  77%|███████▋  | 1.12G/1.45G [00:16<00:06, 53.0MB/s]
+model.safetensors:  78%|███████▊  | 1.14G/1.45G [00:16<00:05, 58.1MB/s]
+model.safetensors:  80%|███████▉  | 1.15G/1.45G [00:17<00:04, 62.5MB/s]
+model.safetensors:  81%|████████  | 1.17G/1.45G [00:17<00:04, 65.5MB/s]
+model.safetensors:  82%|████████▏ | 1.18G/1.45G [00:17<00:03, 67.6MB/s]
+model.safetensors:  83%|████████▎ | 1.20G/1.45G [00:17<00:03, 68.6MB/s]
+model.safetensors:  84%|████████▍ | 1.22G/1.45G [00:18<00:03, 71.6MB/s]
+model.safetensors:  85%|████████▌ | 1.23G/1.45G [00:18<00:02, 73.7MB/s]
+model.safetensors:  86%|████████▌ | 1.25G/1.45G [00:18<00:02, 72.9MB/s]
+model.safetensors:  87%|████████▋ | 1.26G/1.45G [00:18<00:03, 52.1MB/s]
+model.safetensors:  88%|████████▊ | 1.28G/1.45G [00:19<00:02, 57.4MB/s]
+model.safetensors:  90%|████████▉ | 1.30G/1.45G [00:19<00:02, 62.8MB/s]
+model.safetensors:  91%|█████████ | 1.31G/1.45G [00:19<00:02, 65.7MB/s]
+model.safetensors:  92%|█████████▏| 1.33G/1.45G [00:19<00:01, 69.4MB/s]
+model.safetensors:  93%|█████████▎| 1.34G/1.45G [00:19<00:01, 73.7MB/s]
+model.safetensors:  94%|█████████▍| 1.36G/1.45G [00:20<00:01, 73.9MB/s]
+model.safetensors:  95%|█████████▌| 1.38G/1.45G [00:20<00:00, 78.0MB/s]
+model.safetensors:  96%|█████████▌| 1.39G/1.45G [00:20<00:00, 78.0MB/s]
+model.safetensors:  97%|█████████▋| 1.41G/1.45G [00:20<00:00, 59.8MB/s]
+model.safetensors:  98%|█████████▊| 1.42G/1.45G [00:21<00:00, 62.9MB/s]
+model.safetensors:  99%|█████████▉| 1.44G/1.45G [00:21<00:00, 66.7MB/s]
+model.safetensors: 100%|██████████| 1.45G/1.45G [00:21<00:00, 67.2MB/s]
+2026-03-18 10:43:55,265 [INFO] model: Model card updated: codey-lab/model.universal-mcp-hub
+2026-03-18 10:43:55,266 [INFO] train: Model pushed → codey-lab/model.universal-mcp-hub
