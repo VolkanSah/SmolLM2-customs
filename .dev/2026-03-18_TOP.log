@@ -300,6 +300,9 @@ No files have been modified since last commit. Skipping to prevent empty commit.
 2026-03-18 18:10:58,338 [WARNING] huggingface_hub.hf_api: No files have been modified since last commit. Skipping to prevent empty commit.
 2026-03-18 18:10:58,917 [INFO] model: Model card updated: codey-lab/model.universal-mcp-hub
 2026-03-18 18:10:58,918 [INFO] train: Model pushed → codey-lab/model.universal-mcp-hub
+
+
+### Start Hub requests test
 2026-03-18 18:16:18,351 [INFO] main: ADI | decision: HIGH_PRIORITY | score: -5.718
 The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
 2026-03-18 18:16:34,714 [INFO] main: SmolLM2 response ok | decision: HIGH_PRIORITY
