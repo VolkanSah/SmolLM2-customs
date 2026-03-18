@@ -94,18 +94,19 @@ def get_model_kwargs() -> dict:
 # =============================================================================
 
 def load_logs() -> list:
-    """
-    Load existing log entries from HF Dataset.
-    Returns empty list if dataset doesn't exist yet.
-    """
     if not TOKEN:
         logger.warning("No token — dataset read skipped")
         return []
     try:
-        ds = load_dataset(DATASET_REPO, split="train", token=TOKEN)
+        ds = load_dataset(
+            "parquet",
+            data_files={"train": f"hf://datasets/{DATASET_REPO}/**.parquet"},
+            split="train",
+            token=TOKEN
+        )
         return ds.to_list()
     except Exception as e:
-        logger.info(f"Dataset load: {type(e).__name__} — starting fresh")
+        logger.info(f"Dataset load: {type(e).__name__}: {e} — starting fresh")
         return []
 
 
