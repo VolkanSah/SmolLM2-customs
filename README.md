@@ -23,7 +23,7 @@ short_description: Showcase — Build your own free LLM service and plug it into
 
 A minimal but production-ready LLM service built on:
 
-- **SmolLM2-360M-Instruct** — 269MB, Apache 2.0, runs on 2 CPUs and ~2GB RAM for free
+- **SmolLM2-360M-Instruct** — 269MB, Apache 2.0, minimum runs on 2 CPUs and ~2GB RAM for free  (basic cuda -> fallback -> cpu)
 - **FastAPI** — OpenAI-compatible `/v1/chat/completions` endpoint
 - **ADI** (Anti-Dump Index) — filters low-quality requests before AND after inference
 - **HF Dataset** — logs every request automatically for later finetuning
@@ -49,14 +49,14 @@ Not a chatbot. Not an AI agent. A **drilled assistant** — trained on your own 
 
 ```
 You:  "local pcap capture"
-ShellMaster: tcpdump -i eth0 -w capture.pcap
+Hub: tcpdump -i eth0 -w capture.pcap
              tshark -i eth0 -w capture.pcap
 
 You:  "nmap stealth syn scan"
-ShellMaster: nmap -sS 192.168.1.1
+Hub: nmap -sS 192.168.1.1
 
 You:  "c2 jitter detection wireshark"
-ShellMaster: dns && frame.time_delta
+Hub: dns && frame.time_delta
              frame.time_delta.stddev < 0.05 → automated behavior
 ```
 
@@ -154,7 +154,7 @@ GET  /                        → status
 GET  /v1/health               → health check (auth required)
 POST /v1/chat/completions     → OpenAI-compatible inference
 POST /v1/train/execute?mode=  → remote training trigger
-                                 mode: export | validate | finetune
+                                 mode: export | validate | finetune (trigger over git, too)
 ```
 
 ---
