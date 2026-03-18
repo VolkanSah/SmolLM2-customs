@@ -100,7 +100,7 @@ def load_logs() -> list:
     try:
         ds = load_dataset(
             "parquet",
-            data_files={"train": f"hf://datasets/{DATASET_REPO}/**.parquet"},
+            data_files={"train": f"hf://datasets/{DATASET_REPO}/data/*.parquet"},
             split="train",
             token=TOKEN
         )
