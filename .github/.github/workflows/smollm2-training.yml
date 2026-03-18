@@ -1,0 +1,175 @@
+name: SmolLM2 Training Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Which steps to run"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - export
+          - validate
+          - finetune
+          - export_validate
+      dry_run:
+        description: "Dry run (only print curl commands, don't execute)"
+        required: false
+        default: false
+        type: boolean
+
+  # Optional: schedule z.B. täglich um 2 Uhr
+  # schedule:
+  #   - cron: "0 2 * * *"
+
+# Verhindert parallele Runs – kein doppeltes Training
+concurrency:
+  group: smollm2-training
+  cancel-in-progress: false  # Lieber warten als abbrechen
+
+env:
+  API_BASE: "https://codey-lab-smollm2-customs.hf.space/v1/train/execute"
+  TIMEOUT: 300        # Sekunden pro Request (HF Spaces können träge sein)
+  RETRY_MAX: 3        # Max Versuche pro Step
+  RETRY_DELAY: 15     # Sekunden zwischen Retries (wird verdoppelt)
+
+jobs:
+  training-pipeline:
+    name: "Training Pipeline [${{ github.event.inputs.mode }}]"
+    runs-on: ubuntu-latest
+    timeout-minutes: 90  # Gesamtes Job-Timeout
+
+    steps:
+      # ── Sanity Check ──────────────────────────────────────────────────────
+      - name: Validate inputs & secrets
+        run: |
+          if [ -z "${{ secrets.SMOLLM_API_KEY }}" ]; then
+            echo "::error::Secret SMOLLM_API_KEY ist nicht gesetzt!"
+            exit 1
+          fi
+          echo "Mode: ${{ github.event.inputs.mode }}"
+          echo "Dry-run: ${{ github.event.inputs.dry_run }}"
+          echo "Triggered by: ${{ github.actor }}"
+          echo "Ref: ${{ github.ref }}"
+
+      # ── Hilfsfunktion als Script hinterlegen ──────────────────────────────
+      - name: Write helper script
+        run: |
+          cat << 'EOF' > /tmp/call_api.sh
+          #!/usr/bin/env bash
+          # Usage: call_api.sh <mode> <dry_run>
+          set -euo pipefail
+
+          MODE=$1
+          DRY_RUN=${2:-false}
+          URL="${API_BASE}?mode=${MODE}"
+          ATTEMPT=0
+          DELAY=$RETRY_DELAY
+
+          echo "▶ Triggering mode='${MODE}' → ${URL}"
+
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "[DRY RUN] curl -X POST \"${URL}\" -H \"Authorization: Bearer ***\" --max-time ${TIMEOUT}"
+            exit 0
+          fi
+
+          while [ $ATTEMPT -lt $RETRY_MAX ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            echo "  Attempt ${ATTEMPT}/${RETRY_MAX}..."
+
+            HTTP_CODE=$(curl -s -o /tmp/response_body.json -w "%{http_code}" \
+              -X POST "${URL}" \
+              -H "Authorization: Bearer ${SMOLLM_API_KEY}" \
+              -H "Content-Type: application/json" \
+              --max-time "${TIMEOUT}" \
+              --connect-timeout 30 \
+              2>/tmp/curl_err.txt)
+
+            CURL_EXIT=$?
+
+            # curl selbst ist gecrasht (Timeout, DNS etc.)
+            if [ $CURL_EXIT -ne 0 ]; then
+              echo "::warning::curl Fehler (exit $CURL_EXIT): $(cat /tmp/curl_err.txt)"
+              if [ $ATTEMPT -lt $RETRY_MAX ]; then
+                echo "  Warte ${DELAY}s vor Retry..."
+                sleep $DELAY
+                DELAY=$((DELAY * 2))
+                continue
+              fi
+              echo "::error::Alle Versuche fehlgeschlagen (curl error) für mode=${MODE}"
+              exit 1
+            fi
+
+            echo "  HTTP Status: ${HTTP_CODE}"
+
+            # Response Body loggen (ohne sensible Daten)
+            if [ -f /tmp/response_body.json ]; then
+              echo "  Response: $(cat /tmp/response_body.json | head -c 500)"
+            fi
+
+            # Erfolg: 2xx
+            if [[ "$HTTP_CODE" =~ ^2[0-9]{2}$ ]]; then
+              echo "✅ mode=${MODE} erfolgreich (HTTP ${HTTP_CODE})"
+              exit 0
+            fi
+
+            # Client-Fehler (4xx) → kein Retry, direkt abbrechen
+            if [[ "$HTTP_CODE" =~ ^4[0-9]{2}$ ]]; then
+              echo "::error::Client-Fehler HTTP ${HTTP_CODE} für mode=${MODE} – kein Retry"
+              echo "::error::Response: $(cat /tmp/response_body.json)"
+              exit 1
+            fi
+
+            # Server-Fehler (5xx) → Retry
+            echo "::warning::Server-Fehler HTTP ${HTTP_CODE}, Retry in ${DELAY}s..."
+            sleep $DELAY
+            DELAY=$((DELAY * 2))
+          done
+
+          echo "::error::mode=${MODE} nach ${RETRY_MAX} Versuchen fehlgeschlagen"
+          exit 1
+          EOF
+          chmod +x /tmp/call_api.sh
+
+      # ── Step 1: Export ─────────────────────────────────────────────────────
+      - name: "Step 1 – Export Dataset to JSONL"
+        if: |
+          github.event.inputs.mode == 'all' ||
+          github.event.inputs.mode == 'export' ||
+          github.event.inputs.mode == 'export_validate'
+        env:
+          SMOLLM_API_KEY: ${{ secrets.SMOLLM_API_KEY }}
+        run: /tmp/call_api.sh "export" "${{ github.event.inputs.dry_run }}"
+
+      # ── Step 2: Validate ───────────────────────────────────────────────────
+      - name: "Step 2 – Validate ADI Weights"
+        if: |
+          github.event.inputs.mode == 'all' ||
+          github.event.inputs.mode == 'validate' ||
+          github.event.inputs.mode == 'export_validate'
+        env:
+          SMOLLM_API_KEY: ${{ secrets.SMOLLM_API_KEY }}
+        run: /tmp/call_api.sh "validate" "${{ github.event.inputs.dry_run }}"
+
+      # ── Step 3: Finetune ───────────────────────────────────────────────────
+      - name: "Step 3 – Finetune SmolLM2"
+        if: |
+          github.event.inputs.mode == 'all' ||
+          github.event.inputs.mode == 'finetune'
+        env:
+          SMOLLM_API_KEY: ${{ secrets.SMOLLM_API_KEY }}
+        run: /tmp/call_api.sh "finetune" "${{ github.event.inputs.dry_run }}"
+
+      # ── Summary ────────────────────────────────────────────────────────────
+      - name: Pipeline Summary
+        if: always()
+        run: |
+          echo "## SmolLM2 Training Pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Mode** | ${{ github.event.inputs.mode }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Dry Run** | ${{ github.event.inputs.dry_run }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Triggered by** | ${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Run** | [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |" >> $GITHUB_STEP_SUMMARY
