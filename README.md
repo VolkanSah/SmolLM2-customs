@@ -64,6 +64,52 @@ No preamble. No explanation. Just the tool.
 
 ---
 
+## Why ADI? The Anti-Bullshit Filter Every LLM Needs
+
+This is the part most LLM projects skip — and it's the part that matters most for training quality.
+
+Every request that hits the service gets scored by the **Anti-Dump Index (ADI)** — before inference and after. The idea is simple: garbage in, garbage out. If you train a model on low-quality interactions, you get a low-quality model. ADI exists to break that cycle.
+
+**What ADI filters out:**
+- Vague, meaningless, or incomplete requests ("tell me something", "help", "?")
+- Prompt injection attempts and jailbreak patterns
+- Requests with no actionable signal — things that would produce useless training data even if answered correctly
+
+**What ADI lets through:**
+- Specific, well-formed requests with clear intent
+- Anything that would actually produce a useful training example
+
+**Why this matters for training:**
+
+Every interaction that passes ADI gets logged to a private HF dataset. When you trigger the training pipeline, ADI filters the dataset again — REJECT entries are skipped, only clean interactions feed the fine-tuner. The result is a model that keeps getting better at exactly what you actually use it for, without accumulating noise.
+
+```
+Request → ADI scores input
+              ↓
+         REJECT → logged (skipped at training time)
+         PASS   → SmolLM2 answers → ADI scores output
+                      ↓
+                 logged to dataset (used at training time)
+```
+
+The ADI implementation here is minimal — built for this showcase. But the concept scales. Any model, any domain. You define what "quality" means for your use case, ADI enforces it, and your training data stays clean automatically.
+
+This is not a new idea. It's just rarely done at the data-collection layer. Most projects filter after the fact, manually, if at all. Here it's built into the loop from day one.
+
+---
+
+## Ethics & Intent — No Profit, No Scam, No Exceptions
+
+This project was built to learn and to share — nothing else.
+
+It is not built for profit. It is not built to enable scams, illegal activity, or any kind of harm — legal or not. The [ESOL license](ESOL) is not decoration; it is a hard constraint on how this software may be used.
+
+The security focus (ADI filtering, auth hardening, rate limiting) exists because the author spent years working in Linux and security environments. These are not features added to look serious — they reflect how production systems actually need to be built.
+
+If you fork this: use it to learn, use it to build something honest, use it to understand how LLM services work under the hood. That's what it's here for.
+
+---
+
 ## How it works
 
 ```
@@ -161,7 +207,7 @@ POST /v1/train/execute?mode=  → remote training trigger
 
 ## Plug into any Hub
 
-Works out of the box with [Multi-LLM-API-Gateway](https://github.com/VolkanSah/Multi-LLM-API-Gateway):
+Works out of the box with my [AI HUB](https://github.com/VolkanSah/Multi-LLM-API-Gateway):
 
 ```ini
 [LLM_PROVIDER.smollm]
@@ -221,14 +267,11 @@ ADI runs **twice** — on input and on output. Low-quality requests never reach 
 ## Hardware Reality
 
 ```
-HF Space (free tier):   2 CPU  /  2-3 GB RAM  → inference + training
+HF Space (free tier):   2 CPU  /  2-3 GB RAM  → inference + training (till 9 GB by my tests)
 ThinkPad X201 (2010):   4 CPU  /  8 GB RAM    → local deployment
-Neon PostgreSQL (free): 4 CPU  / 22 GB RAM    → Guardian layer DB
+
 ```
 
-The database is heavier than the model. SmolLM2-360M fits in 2GB. That's the point.
-
----
 
 ## Stack
 
@@ -239,7 +282,6 @@ The database is heavier than the model. SmolLM2-360M fits in 2GB. That's the poi
 | `model.py` | HF token resolution, dataset + model repo access |
 | `adi.py` | Request quality scoring (input + output) |
 | `train.py` | Dataset export, ADI validation, TRL SFTTrainer finetuning |
-train_local.sh not ready
 
 ---
 
@@ -250,7 +292,7 @@ train_local.sh not ready
 | [Multi-LLM-API-Gateway](https://github.com/VolkanSah/Multi-LLM-API-Gateway) | The hub — Guardian pattern, MCP, fallback chain |
 | [Anti-Dump-Index](https://github.com/VolkanSah/Anti-Dump-Index) | ADI algorithm |
 | [Parquet-Sync](https://github.com/VolkanSah/Parquet-Sync) | Edit HF dataset Parquet files as human-readable CSV |
-| [Blue Earth](https://github.com/VolkanSah/Hack-the-Planet) | The security workflow the ShellMaster is drilled on |
+| [Blue Earth](https://github.com/VolkanSah/Hack-the-Planet) | The security workflow the non public is drilled on |
 
 ---
 
@@ -267,4 +309,3 @@ By using this software you agree to all ethical constraints defined in ESOL v1.1
 
 *Built with Claude (Anthropic) as a typing assistant — tabs, docs, and the occasional bug fix.*
 *Architecture, security decisions, and the 1984 commands: Volkan Kücükbudak.* 😄
-
