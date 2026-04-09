@@ -291,7 +291,7 @@ ThinkPad X201 (2010):   4 CPU  /  8 GB RAM    → local deployment
 
 | Project | Role |
 |---------|------|
-| [Multi-LLM-API-Gateway](https://github.com/VolkanSah/Multi-LLM-API-Gateway) | The hub — Guardian pattern, MCP, fallback chain |
+| [Universal AI Hub](https://github.com/VolkanSah/Universal-AI-Hub) | My Universal AI Hub — Guardian pattern, +MCP, fallback chain |
 | [Anti-Dump-Index](https://github.com/VolkanSah/Anti-Dump-Index) | ADI algorithm |
 | [Parquet-Sync](https://github.com/VolkanSah/Parquet-Sync) | Edit HF dataset Parquet files as human-readable CSV |
 | [Blue Earth](https://github.com/VolkanSah/Hack-the-Planet) | The security workflow the non public is drilled on |
